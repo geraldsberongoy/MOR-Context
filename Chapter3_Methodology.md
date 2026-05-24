@@ -1,7 +1,7 @@
 # Chapter 3
 # METHODOLOGY
 
-This chapter presents the methodology, research design, and project implementation flow for the development of the **Solar-Powered Semi-Automated Paper-Charcoal Briquetting Machine**. It details the hardware specifications, sensor networks, electrical schematics, software finite state machine (FSM), user session persistence logic, graphical user interface (GUI) mapping, and the analytical treatments used to validate the system’s performance and energy self-sufficiency.
+This chapter presents the methodology, research design, and project implementation flow for the development of the **Solar-Powered Semi-Automated Paper-Charcoal Briquetting Machine**. It details the hardware specifications, sensor networks, electrical schematics, software finite state machine (FSM), user session persistence logic, companion web dashboard (PWA), and the analytical treatments used to validate the system’s performance and energy self-sufficiency.
 
 ---
 
@@ -267,47 +267,6 @@ Both measurements are well below the human sensory perception threshold of $100.
 
 ---
 
-## **Material Requirements**
-
-To ensure the uniform chemical and mechanical quality of the produced solid fuel briquettes, the raw materials are selected, sorted, and prepared under strict laboratory criteria. The system accepts three primary material inputs: residual charcoal fines, waste paper biomass, and purified municipal water. The exact specifications, sourcing mechanisms, and physiological roles of each material are elaborated below.
-
-```
-+-------------------------------------------------------------------------------+
-|                             RAW MATERIAL INPUTS                               |
-+--------------------------+--------------------------+-------------------------+
-|      Charcoal Fines      |       Waste Paper        |      Water Quality      |
-|  - Residual particulate  |  - High-cellulose fibers |  - Hydration agent      |
-|  - High carbon content   |  - Cellulose bonding     |  - Neutral pH (6.5-7.5) |
-|  - Particle size < 1.0mm |  - Office/news/cardboard |  - TDS < 300 ppm        |
-+--------------------------+--------------------------+-------------------------+
-```
-
-### **1. Charcoal Fines (Biomass Fuel Source)**
-*Charcoal fines* constitute the primary carbonaceous thermal substrate of the briquettes. These fines represent the residual, pulverized fragments and dust discarded during the commercial transport, storage, and handling of traditional lump wood charcoal. 
-*   **Sourcing**: The charcoal fines are sourced from local wet markets and charcoal distribution depots in **Sta. Mesa, Manila**, particularly from sellers of lump charcoal derived from dense hardwood species such as *Leucaena leucocephala* (Ipil-Ipil) and *Gliricidia sepium* (Madre de Cacao).
-*   **Physical Specifications (Mesh Size)**: To achieve dense spatial packing and uniform thermal diffusion within the molded briquette, the raw charcoal fragments are processed using the machine’s integrated grinding assembly. The fines must be pulverized to a uniform particle size of **less than 1.0 mm** (nominally passing through a **standard 20-mesh sieve**, corresponding to aperture widths of $0.84 \text{ mm}$). Particles larger than 1.0 mm act as mechanical stress concentration points, rendering the final briquette prone to physical breakdown.
-*   **Chemical Characteristics**: Sourced charcoal fines must possess an initial **moisture content of $\le 10\%$** on a dry basis to prevent unpredictable mass dilution during the mixing stage. The fixed carbon content of the fines must exceed **$70\%$ by weight**, with a target higher heating value (HHV) of **$\ge 25.0 \text{ MJ/kg}$** to ensure competitive combustion performance.
-
-### **2. Waste Paper Sourcing (Cellulosic Binder)**
-*Waste paper* serves as the organic binding agent of the briquettes, utilizing natural cellulose polymers to cement the inert charcoal dust particles into a rigid structural matrix.
-*   **Sourcing**: Discarded paper waste is collected from administrative offices, computer laboratories, and academic departments within the **Polytechnic University of the Philippines (PUP) Sta. Mesa Campus**. This ensures a steady, high-volume flow of homogeneous lignocellulosic waste.
-*   **Material Types and Sieve Profiles**: The study categorizes and utilizes three distinct grades of paper waste:
-    1.  *Office Waste Paper (Bond Paper)*: Consisting of $70\text{--}80 \text{ gsm}$ printed or unprinted sheets. It consists of highly bleached chemical wood pulp, which is rich in easily accessible cellulose fibers.
-    2.  *Newsprint*: Consisting of mechanical pulp with slightly shorter fibers but highly flexible structures that hydrate rapidly.
-    3.  *Corrugated Cardboard*: Consisting of unbleached kraft pulp. The long, unrefined cellulose fibers within cardboard add superior tensile strength and mechanical durability to the briquette.
-*   **Cellulose Content & Processing**: The paper must exhibit a cellulose fraction of **$40\text{--}50\%$ by dry weight**, with hemicellulose at **$20\text{--}30\%$** and lignin kept to a minimum ($\le 20\%$) to maximize fiber flexibility. Prior to soaking, the dry paper is cross-cut shredded to physical dimensions of approximately **$4.0 \text{ mm} \times 40.0 \text{ mm}$**. This shredding size increases the exposed edge surface area, allowing rapid hydration.
-
-### **3. Water Quality (Activation Medium)**
-Water acts as the physical solvent and chemical driver that initiates the swelling and fibrillation of the dry cellulose structures, transitioning the shredded paper into a highly adhesive hydrogel.
-*   **Sourcing & Purging**: The water utilized in the soaking chamber is sourced directly from the municipal tap water distribution line (Maynilad Water Services) in Sta. Mesa, Manila. 
-*   **Physicochemical Parameters**: To prevent mineral scaling on the water flow sensors, solenoid valves, and mixing blades, and to ensure that the hydrogen bonding of cellulose is not inhibited, the water must satisfy the following criteria:
-    *   *pH Range*: Neutral range of **$7.0 \pm 0.5$** (measured at $25^\circ\text{C}$). Extreme pH levels alter the electrostatic charge of cellulose fibers, reducing their agglomeration capacity.
-    *   *Temperature*: Maintained at local ambient temperature (**$28^\circ\text{C} \pm 2^\circ\text{C}$**) to optimize mass-transfer rates during fiber swelling without requiring external electrical heating.
-    *   *Total Dissolved Solids (TDS)*: Kept below **$300 \text{ mg/L (ppm)}$**, preventing high concentrations of divalent cations ($Ca^{2+}$, $Mg^{2+}$) from cross-linking with cellulose carboxylic groups prematurely.
-    *   *Turbidity*: Certified at **$\le 5.0 \text{ NTU}$** to ensure zero silt contamination in the mixture.
-
----
-
 ## **Mix Design**
 
 The mix design establishes the physical and chemical ratios governing the raw material blend. By balancing the high calorific value of the carbonaceous charcoal fines with the binding strength of the paper cellulose fibers, the mix design optimizes both combustion output and mechanical stability.
@@ -338,116 +297,6 @@ The adhesion of the paper-charcoal blend relies on the **Cellulose Fiber Bonding
 A defining characteristic of this project is its reliance on **100% chemical-free adhesion**. 
 *   **Elimination of Synthetic Additives**: Conventional briquetting processes often utilize synthetic chemical binders (such as urea-formaldehyde resins, polyvinyl alcohol, or coal tar pitch) or starch-based food binders to maintain structural shape. These chemicals introduce heavy costs, reduce shelf-life, and release toxic fumes during combustion.
 *   **Environmental & Health Benefits**: By utilizing only municipal water and natural paper cellulose, the briquette releases zero synthetic volatile organic compounds (VOCs), sulfur oxides ($SO_x$), or dense nitrogen dioxide ($NO_2$) fumes when burned. The resulting solid fuel is safe for indoor household cooking, barbecue preparation, and general space heating, meeting strict environmental health guidelines.
-
----
-
-## **Specimen Details**
-
-To maintain a rigorous comparative study, the physical geometry of the final briquette is fixed across all trials. The mechanical mold of the machine is engineered to fabricate highly uniform rectangular prisms, which are easily stacked, packed, and measured.
-
-```
-                    10.0 cm (Length)
-             +------------------------------+
-            /                              /|
-           /                              / |  5.0 cm (Height)
-          /                              /  |
-         +------------------------------+   +
-         |                              |  /
-         |                              | /  5.0 cm (Width)
-         |                              |/
-         +------------------------------+
-```
-
-### **1. Physical Dimensions**
-The physical dimensions of the rectangular prism specimens are defined as:
-*   **Length ($l$)**: $10.0 \text{ cm} \pm 0.10 \text{ cm}$ ($0.10 \text{ m}$)
-*   **Width ($w$)**: $5.0 \text{ cm} \pm 0.05 \text{ cm}$ ($0.05 \text{ m}$)
-*   **Height ($h$)**: $5.0 \text{ cm} \pm 0.05 \text{ cm}$ ($0.05 \text{ m}$)
-
-### **2. Surface Area Calculation**
-The total outer surface area ($A_s$) of the rectangular specimen determines the heat and mass transfer boundary during the halogen drying phase and the oxygen exposure boundary during combustion.
-$$A_s = 2 \cdot (l \cdot w + l \cdot h + w \cdot h)$$
-$$A_s = 2 \cdot (10.0 \text{ cm} \cdot 5.0 \text{ cm} + 10.0 \text{ cm} \cdot 5.0 \text{ cm} + 5.0 \text{ cm} \cdot 5.0 \text{ cm})$$
-$$A_s = 2 \cdot (50.0 \text{ cm}^2 + 50.0 \text{ cm}^2 + 25.0 \text{ cm}^2)$$
-$$A_s = 2 \cdot (125.0 \text{ cm}^2) = 250.0 \text{ cm}^2 = 0.025 \text{ m}^2 = 2.50 \times 10^{-2} \text{ m}^2$$
-
-### **3. Volume Calculation**
-The physical volume ($V$) of the mold cavity dictates the volumetric boundary of the compacted wet mixture.
-$$V = l \cdot w \cdot h$$
-$$V = 10.0 \text{ cm} \cdot 5.0 \text{ cm} \cdot 5.0 \text{ cm} = 250.0 \text{ cm}^3 = 0.00025 \text{ m}^3 = 2.50 \times 10^{-4} \text{ m}^3$$
-
-### **4. Target Dry Weight, Density, and Trial Counts**
-Due to the constant mold volume, the final dry density and mass of each specimen are determined by the mix ratios and the mechanical compaction limit. Under the machine’s standard **$2000 \text{ N}$ mechanical force** (yielding a compaction pressure of $400 \text{ kPa}$ over the $0.005 \text{ m}^2$ base area), the target weights and densities are cataloged in the table below:
-
-| Parameter | Mix A (10:90) | Mix B (20:80) | Mix C (30:70) | Mix D (40:60) |
-| :--- | :--- | :--- | :--- | :--- |
-| **Paper Binder Dry Weight Ratio** | 10% | 20% | 30% | 40% |
-| **Charcoal Fines Dry Weight Ratio**| 90% | 80% | 70% | 60% |
-| **Dry Paper Mass per Specimen** | $20.0 \text{ g}$ | $38.0 \text{ g}$ | $54.0 \text{ g}$ | $68.0 \text{ g}$ |
-| **Dry Charcoal Mass per Specimen** | $180.0 \text{ g}$ | $152.0 \text{ g}$ | $126.0 \text{ g}$ | $102.0 \text{ g}$ |
-| **Target Total Dry Mass ($m$)** | **$200.0 \text{ g}$** | **$190.0 \text{ g}$** | **$180.0 \text{ g}$** | **$170.0 \text{ g}$** |
-| **Target Dry Density ($\rho$ in $\text{kg/m}^3$)**| **$800.0 \text{ kg/m}^3$** | **$760.0 \text{ kg/m}^3$** | **$720.0 \text{ kg/m}^3$** | **$680.0 \text{ kg/m}^3$** |
-| **Target Dry Density ($\rho$ in $\text{g/cm}^3$)**| $0.800 \text{ g/cm}^3$ | $0.760 \text{ g/cm}^3$ | $0.720 \text{ g/cm}^3$ | $0.680 \text{ g/cm}^3$ |
-| **Specimen Volume ($V$)** | $250.0 \text{ cm}^3$ | $250.0 \text{ cm}^3$ | $250.0 \text{ cm}^3$ | $250.0 \text{ cm}^3$ |
-| **Replicate Specimen Count ($n$)** | 30 trials | 30 trials | 30 trials | 30 trials |
-| **Total Study Sample Size ($N$)** | **120 specimens** | | | |
-
----
-
-## **Laboratory Experiment / Field Experiment**
-
-To validate the developed machine's performance, the finalized briquette specimens undergo four distinct experimental procedures evaluating their mechanical strength, thermal output, composition, and environmental resilience.
-
-```
-+----------------------------------------------------------------------------+
-|                            EXPERIMENTAL SUITE                              |
-+--------------------------+-----------------------+-------------------------+
-|    Drop Shatter Test     |  Water Boiling Test   |   Water Immersion Test  |
-| - Standard 1.83m drop    | - 1.0 Liter of water  | - 30-second submersion  |
-| - 4 consecutive drops    | - Log ignition & boil | - Calculate absorption  |
-| - Calculate % retention  | - Thermal efficiency  | - Mechanical survival   |
-+--------------------------+-----------------------+-------------------------+
-```
-
-### **1. Shatter Resistance via Drop Tests**
-The shatter resistance test simulates the mechanical impact stresses the briquettes encounter during manual handling, stacking, bag transport, and drop events.
-*   **Apparatus and Setup**: A vertical drop column is constructed with a height of **$1.83 \text{ meters}$** ($6.0 \text{ feet}$) measured from the bottom release mechanism to a flat, horizontal, structural concrete floor.
-*   **Procedure**:
-    1.  The initial mass of the dry briquette is recorded ($M_{\text{initial}}$).
-    2.  The specimen is loaded into the release mechanism at the top of the column and dropped vertically onto the concrete slab.
-    3.  The specimen is recovered and dropped from the same height for a total of **four (4) consecutive drop cycles**.
-    4.  All resulting fragments and particles are gathered and placed on a standard steel sieve with an aperture size of **$12.5 \text{ mm}$**.
-    5.  The mass of the larger fragments retained on the $12.5 \text{ mm}$ sieve is recorded ($M_{\text{retained}}$).
-*   **Calculation**: The Shatter Resistance Index (SRI) is computed as:
-    $$\text{SRI (\%)} = \frac{M_{\text{retained}}}{M_{\text{initial}}} \times 100\%$$
-    A briquette with an $\text{SRI} \ge 90\%$ is deemed highly durable for commercial logistics.
-
-### **2. Burning Duration and Thermal Performance**
-This experiment measures the ignition efficiency, heat transfer rate, and total active thermal duration of the briquettes in a draft-free environment at $28^\circ\text{C}$ and $60\text{--}70\%$ RH.
-*   **Ignition Time ($t_{\text{ign}}$)**: A single specimen is placed on a wire mesh stand. A calibrated LPG blowtorch flame (constant nozzle temperature of $800^\circ\text{C}$) is directed at the bottom face of the briquette. The time required for the surface to sustain independent combustion (characterized by a self-sustaining red-hot glow and zero flame extinguishment upon removal of the heat source) is logged using a stopwatch.
-*   **Water Boiling Test (WBT)**: To evaluate real-world thermal application, a mass of $400 \text{ g}$ of the selected briquette formulation (two specimens) is fully ignited. A thin-walled aluminum pot filled with exactly **$1.0 \text{ Liter}$ ($1000 \text{ g}$) of water** at an initial temperature ($T_{\text{initial}} \approx 25^\circ\text{C}$) is placed directly above the burning mass. A waterproof temperature sensor records the water temperature at 30-second intervals until it reaches the local boiling point ($T_{\text{boil}} \approx 100^\circ\text{C}$). The time-to-boil and thermal transfer curves are recorded.
-*   **Total Burning Duration ($\Delta t_{\text{burn}}$)**: The ignited briquette assembly is placed on a digital scale plate protected by an insulation sheet. The mass and core temperature of the burning briquettes are logged continuously. The burning duration is defined as the elapsed time from initial self-sustained ignition to the point where the specimen mass decreases to **$10\%$ of its initial value** ($M_{\text{residual}} \le 0.10 \cdot M_{\text{initial}}$), or when the surface temperature drops below $150^\circ\text{C}$.
-
-### **3. Ash Content Determination**
-The ash content represents the percentage of non-combustible inorganic mineral residue remaining after the volatile compounds and fixed carbon have been completely oxidized. High ash content lowers the calorific value and clogs grates with dust.
-*   **Procedure**:
-    1.  A clean, empty porcelain crucible is heated in a muffle furnace at $575^\circ\text{C}$ for 60 minutes, cooled in a silica-gel desiccator, and weighed on an analytical balance to $0.1 \text{ mg}$ precision ($W_{\text{crucible}}$).
-    2.  A sample of $2.000 \text{ g}$ of pulverized dry briquette is placed inside the crucible, and the combined mass is recorded ($W_{\text{initial\_comb}}$).
-    3.  The crucible is transferred to the muffle furnace, where the temperature is ramped to **$575^\circ\text{C} \pm 25^\circ\text{C}$** and maintained for a minimum of **$4.0 \text{ hours}$** in an oxygen-rich atmosphere to ensure complete ash conversion.
-    4.  The crucible is removed from the furnace, cooled in the desiccator for 45 minutes to prevent moisture absorption from the air, and weighed ($W_{\text{final\_ash}}$).
-*   **Calculation**:
-    $$\text{Ash Content (\%)} = \frac{W_{\text{final\_ash}} - W_{\text{crucible}}}{W_{\text{initial\_comb}} - W_{\text{crucible}}} \times 100\%$$
-
-### **4. Water-Resistance and Humidity Endurance Testing**
-This test evaluates the briquettes' physical integrity when exposed to high-humidity environments or direct water contact, representing sub-optimal tropical storage conditions in Manila.
-*   **Water Absorption (WA%) via Immersion**: 
-    1.  The initial dry weight of a ready-to-use briquette is measured ($M_{\text{dry}}$).
-    2.  The specimen is completely submerged in a water bath filled with distilled water maintained at $25^\circ\text{C}$ for exactly **$30 \text{ seconds}$**.
-    3.  The specimen is carefully removed using physical tools, and any surface droplets are gently blotted using dry filter paper.
-    4.  The wet weight of the specimen is immediately recorded ($M_{\text{wet}}$).
-*   **Calculation**:
-    $$\text{Water Absorption (\%)} = \frac{M_{\text{wet}} - M_{\text{dry}}}{M_{\text{dry}}} \times 100\%$$
-*   **Structural Integrity Classification**: During the 30-second immersion, the physical behavior of the specimen is observed. The time of initial structural cracking, swelling, fiber detachment, or complete mechanical disintegration (slaking) is recorded. If a specimen disintegrates completely in the water before 30 seconds, its water absorption is classified as *failed*, indicating that the cellulose fiber density is insufficient to resist hydrostatic swelling forces.
 
 ---
 
@@ -515,53 +364,495 @@ The data gathering procedure follows a strict, step-by-step workflow designed to
 
 ---
 
-## **Population, Sample Size, and Sampling Technique**
+## **Population**
 
-To evaluate the operational usability of the machine's graphical user interface (GUI) and physical ergonomics, a structured human-centered evaluation is conducted alongside the technical material experiments.
-
-```
-       PURPOSIVE SAMPLING FLOW AND PARTICIPANT SELECTION
-       
-  +-----------------------------------------------------------------+
-  | TARGET POPULATION: Barangay 628 & Sta. Mesa Solid Fuel Users    |
-  +-----------------------------------------------------------------+
-                                  |
-                                  | Purposive Sieve
-                                  v
-  +-----------------------------------------------------------------+
-  | INCLUSION CRITERIA:                                             |
-  | 1. Sells street food or operates local carinderia in Sta. Mesa  |
-  | 2. Uses wood/lump charcoal fuel >= 3 times per week            |
-  | 3. Responsible for daily fuel purchases and stove operations    |
-  +-----------------------------------------------------------------+
-                                  |
-                                  | Selection
-                                  v
-  +-----------------------------------------------------------------+
-  | SAMPLE SIZE: 30 Usability Evaluators + 120 Briquette Specimens  |
-  +-----------------------------------------------------------------+
-```
-
-### **1. Target Population**
 The target population for the usability, ergonomic, and practical fuel performance validation studies resides within the **District of Sta. Mesa, Manila**, where the Polytechnic University of the Philippines is situated. Specifically, the population comprises:
 1.  **Street Food Vendors**: Local micro-entrepreneurs operating mobile or stationary street food carts (selling skewered foods like fishballs, *isaw*, and barbecue) who rely on wood charcoal as their primary cooking heat source.
 2.  **Carinderia Operators**: Small-scale family-run eateries operating in Barangay 628 and adjacent low-to-medium income barangays in Sta. Mesa who use solid fuel burners alongside commercial gas.
 3.  **Low-Income Urban Households**: Residents in high-density communities who actively practice "fuel stacking" to manage fluctuating household expenditures.
 
-### **2. Sample Size**
+---
+
+## **Sample Size**
+
 The research integrates two distinct sample groups to satisfy both engineering and social usability criteria:
 1.  **Briquette Specimens ($N = 120$)**: For the technical, mechanical, and thermal combustion experiments, a sample size of **30 trial runs** is performed for each of the four mix design formulations (10:90, 20:80, 30:70, and 40:60), resulting in a total of 120 briquette specimens. This sample size satisfies the requirements of the **Central Limit Theorem**, ensuring that the sample means are normally distributed and validating the application of parametric statistical treatments (such as two-sample t-tests and one-way Analysis of Variance).
 2.  **Human Respondents ($n = 30$)**: For the evaluation of the graphical user interface (Nextion HMI), operational safety, system ergonomics, and combustion usability, a sample size of **30 respondents** is selected from the target population in Sta. Mesa. In human-computer interaction (HCI) research, a sample of 30 evaluators is statistically sufficient to detect more than **$95\%$ of system usability bottlenecks, menu errors, and design inefficiencies**.
 
-### **3. Sampling Technique and Inclusion Criteria**
+---
+
+## **Sampling Technique**
+
 This study employs **purposive sampling** (a non-probability sampling technique), ensuring that participants possess relevant, daily operational experience with solid cooking fuels.
-*   **Inclusion Criteria**: To qualify as a participant in the study, individuals must strictly satisfy the following criteria:
-    1.  *Geographic Location*: Must reside or actively operate a registered/unregistered food stall within **Sta. Mesa, Manila**.
-    2.  *Fuel Reliance*: Must utilize wood charcoal, firewood, or biomass briquettes as a primary cooking fuel at least **three (3) days per week**.
-    3.  *Operational Control*: Must be the primary individual responsible for igniting, managing, and cooking over the solid fuel burner.
-    4.  *Age Requirement*: Must be **$18\text{--}65 \text{ years of age}$** to ensure informed consent and physical capability to interact with the machinery safely.
-*   **Exclusion Criteria**: Individuals who cook exclusively using induction stoves or Liquefied Petroleum Gas (LPG) with zero weekly charcoal usage are excluded, as their feedback would not represent the target alternative-fuel market.
-*   **Sampling Rationale**: Purposive sampling is selected over random sampling because it targets experienced end-users. This focuses feedback on the practical performance of the briquettes and the clarity of the Nextion touchscreen prompts for operators with varying levels of technological literacy.
+
+### **Inclusion Criteria**
+To qualify as a participant in the study, individuals must strictly satisfy the following criteria:
+1.  *Geographic Location*: Must reside or actively operate a registered/unregistered food stall within **Sta. Mesa, Manila**.
+2.  *Fuel Reliance*: Must utilize wood charcoal, firewood, or biomass briquettes as a primary cooking fuel at least **three (3) days per week**.
+3.  *Operational Control*: Must be the primary individual responsible for igniting, managing, and cooking over the solid fuel burner.
+4.  *Age Requirement*: Must be **$18\text{--}65 \text{ years of age}$** to ensure informed consent and physical capability to interact with the machinery safely.
+
+### **Exclusion Criteria**
+Individuals who cook exclusively using induction stoves or Liquefied Petroleum Gas (LPG) with zero weekly charcoal usage are excluded, as their feedback would not represent the target alternative-fuel market.
+
+### **Sampling Rationale**
+Purposive sampling is selected over random sampling because it targets experienced end-users. This focuses feedback on the practical performance of the briquettes and the clarity of the Nextion touchscreen prompts for operators with varying levels of technological literacy.
+
+---
+
+## **Respondents of the Study**
+
+The respondents of the study consist of the **30 purposively sampled solid fuel users** situated in Barangay 628 and the immediate vicinity of Sta. Mesa, Manila. 
+
+The demographic composition consists of:
+* **Street Food Vendors ($60\%$)**: 18 individuals who operate daily charcoal-fired grills.
+* **Carinderia Operators ($30\%$)**: 9 individuals managing small commercial kitchens.
+* **Domestic Households ($10\%$)**: 3 representatives from local low-income housing units.
+
+To gather usability data, these respondents physically interact with the machine prototype's HMI control panel, monitor the stage progression prompts, and participate in combustion and handling trials with the produced briquettes.
+
+---
+
+## **Hardware Requirements**
+
+### **ESP32-WROOM-32D Core System Pin Mapping**
+
+The electrical connections between the ESP32 microcontroller and the peripheral subsystems are defined in the pin mapping table below:
+
+| ESP32 Pin | Connected Component | Interface / Protocol | Signal Direction | Operational Function |
+| :--- | :--- | :--- | :--- | :--- |
+| **3V3** | Sensors / Logic Bus | Power Rail | Output (3.3V) | Supplies regulated VCC to DS18B20, DHT22, and HX711 logic |
+| **GND** | System Common Ground| Power Rail | Reference (0V) | Common ground return path for all logic and sensors |
+| **GPIO 16 (RX2)** | Nextion TX | UART (Serial2) | Input (3.3V) | Receives serial command strings from HMI capacitive screen |
+| **GPIO 17 (TX2)** | Nextion RX | UART (Serial2) | Output (3.3V) | Transmits system status and sensor telemetry to HMI |
+| **GPIO 21 (SDA)** | INA219 SDA | I2C (Wire) | Bidirectional | Data line for power monitoring telemetry (battery and PV) |
+| **GPIO 22 (SCL)** | INA219 SCL | I2C (Wire) | Output (3.3V) | Clock line for power monitoring telemetry (battery and PV) |
+| **GPIO 4** | HX711 DOUT | Digital Input | Input (3.3V) | Serial data stream containing digitized weight readings |
+| **GPIO 5** | HX711 PD_SCK | Digital Output | Output (3.3V) | Clock signal generated to retrieve 24-bit strain-gauge data |
+| **GPIO 18** | YF-S201 Signal | Digital Interrupt | Input (3.3V) | High-speed pulse train input triggered by water flow |
+| **GPIO 19** | DS18B20 Signal | 1-Wire | Bidirectional | Digital temperature bus for drying chamber monitoring |
+| **GPIO 23** | DHT22 Signal | Digital Input | Input (3.3V) | Humidity and temperature data stream from exhaust chamber |
+| **GPIO 25** | IBT-2 RPWM | PWM Output | Output (3.3V) | Forward PWM signal controlling linear actuator extension |
+| **GPIO 26** | IBT-2 LPWM | PWM Output | Output (3.3V) | Reverse PWM signal controlling linear actuator retraction |
+| **GPIO 27** | Grinder Relay | Digital Output | Output (3.3V) | Active-LOW trigger for the 12V 775 Grinder Motor |
+| **GPIO 14** | Solenoid Relay | Digital Output | Output (3.3V) | Active-LOW trigger for the 12V Solenoid Water Valve |
+| **GPIO 12** | Mixer Relay | Digital Output | Output (3.3V) | Active-LOW trigger for the 12V Planetary Mixer Motor |
+| **GPIO 13** | Halogen Relay | Digital Output | Output (3.3V) | Active-LOW trigger for the 12V Halogen Heating Array |
+| **GPIO 15** | Fan Relay | Digital Output | Output (3.3V) | Active-LOW trigger for the 12V Chamber Exhaust Fan |
+| **GPIO 2** | Active Buzzer | Digital Output | Output (3.3V) | Transistor base trigger for audible buzzer alerts |
+| **GPIO 32** | Limit Switch Top | Digital Interrupt | Input (3.3V) | Active-LOW safety interrupt for actuator full extension |
+| **GPIO 33** | Limit Switch Bottom| Digital Interrupt | Input (3.3V) | Active-LOW safety interrupt for actuator full retraction |
+
+### **Component Selection Specifications**
+*   **ESP32-WROOM-32D**: A dual-core 32-bit Tensilica Xtensa processor running at 240 MHz. It handles multi-tasking operations, specifically monitoring high-speed digital pulse streams from the flow sensor, executing the analog-to-digital conversions for the load cell, running the state machine, communicating via Hardware Serial with the display, and writing active session states to the **Non-Volatile Storage (NVS)** partition of its flash memory.
+*   **Nextion Discovery 4.3" HMI Touchscreen (NX4827T043)**: A dedicated graphical interface panel with an onboard ARM Cortex-M0 processor and 16MB of flash memory. Nextion offloads all graphic rendering from the ESP32. It displays real-time system states, active session indicators, solar charge rates, temperature-humidity telemetry, and touch control buttons. It communicates with the ESP32 over a hardware UART interface at a baud rate of 9600 bps.
+*   **12V DC High-Force Linear Actuator**: A heavy-duty linear motor with an integrated gearbox and a lead screw. It provides a maximum thrust of **4000N** at a full-load current of 4A, executing the physical compression of the wet mixture inside the rectangular mold box.
+*   **IBT-2 High-Current H-Bridge Motor Driver**: A dual BTS7960 half-bridge driver capable of handling up to 43A. It drives the linear actuator, allowing the ESP32 to control the direction (extend/retract) and speed (via PWM) of the compression cycle.
+*   **12V DC 775 High-Torque Grinder Motor**: A high-speed DC motor (10,000 RPM) coupled with rotary steel blades inside the grinding chamber to reduce residual charcoal fragments to fine dust.
+*   **12V DC Geared Mixing Motor**: A high-torque planetary geared motor (60 RPM) that drives heavy-duty mixing paddles, ensuring a homogeneous blend of wet activated cellulose fibers and charcoal dust.
+*   **12V DC Solenoid Water Valve (1/2" NPT)**: Normally Closed (NC) valve that opens when the ESP32 energizes its control relay during the soaking phase.
+*   **12V DC Halogen Lamps (4x12.5W / 50W Total)**: Focused radiant heat sources mounted in the drying chamber. They emit high-intensity infrared thermal energy that directly penetrates the briquette structure.
+*   **12V DC Exhaust Fan**: A brushless DC fan mounted at the top of the drying chamber to continuously exhaust hot, moisture-saturated air, expediting the mass transfer of water.
+*   **5V Active Buzzer**: Emits distinct audible sound cues driven via a 2N3904 transistor.
+
+---
+
+## **Software Requirements**
+
+To satisfy the user guidelines, the software architecture features two primary software systems: the **Microcontroller Firmware** executing the real-time Finite State Machine (FSM), and a **Local Web Application/PWA Dashboard** synced via Wi-Fi for remote telemetry and control.
+
+### **1. ESP32 Control and State Persistence Firmware**
+
+The ESP32 software is structured around an event-driven FSM. To handle unexpected power interruptions under off-grid operations, the software utilizes the `Preferences.h` library to write the current active state (`currentState`), user session ID (`user_id`), and flow sensor accumulation parameters directly to the Non-Volatile Storage (NVS) flash partition.
+
+```cpp
+#include <Arduino.h>
+#include <Preferences.h>
+#include <HardwareSerial.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <DHT.h>
+#include <Wire.h>
+#include <Adafruit_INA219.h>
+#include "HX711.h"
+
+// Define Hardware Pin Assignments
+#define NEXTION_RX_PIN      16
+#define NEXTION_TX_PIN      17
+#define HX711_DOUT_PIN      4
+#define HX711_SCK_PIN       5
+#define FLOW_SENSOR_PIN     18
+#define DS18B20_PIN         19
+#define DHT_PIN             23
+#define ACTUATOR_RPWM_PIN   25
+#define ACTUATOR_LPWM_PIN   26
+#define GRINDER_RELAY_PIN   27
+#define SOLENOID_RELAY_PIN  14
+#define MIXER_RELAY_PIN     12
+#define HALOGEN_RELAY_PIN   13
+#define FAN_RELAY_PIN       15
+#define BUZZER_PIN          2
+#define LIMIT_SWITCH_TOP    32
+#define LIMIT_SWITCH_BOTTOM 33
+
+// FSM State Enumeration
+enum MachineState {
+  STATE_IDLE = 0,
+  STATE_GRINDING = 1,
+  STATE_SOAKING = 2,
+  STATE_MIXING = 3,
+  STATE_COMPRESSION = 4,
+  STATE_DRYING = 5,
+  STATE_COMPLETED = 6
+};
+
+// Global System Variables
+MachineState currentState = STATE_IDLE;
+int currentUserID = 0;
+volatile unsigned long flowPulseCount = 0;
+float accumulatedWaterLiters = 0.0;
+float targetWaterLiters = 2.5; // Calibrated 1:1 ratio for a 2.5kg dry batch
+unsigned long stateTimerStart = 0;
+unsigned long stateElapsedDuration = 0;
+bool isPaused = false;
+
+// Calibration Constants
+const float CALIBRATION_FACTOR_FLOW = 450.0; // Pulses per Liter for YF-S201
+const float LOADCELL_CALIBRATION_FACTOR = 2380.0; // Calibrated value under mechanical leverage
+
+// Sensor & Device Instances
+Preferences preferences;
+HX711 loadCell;
+OneWire oneWire(DS18B20_PIN);
+DallasTemperature tempSensor(&oneWire);
+DHT dht(DHT_PIN, DHT22);
+Adafruit_INA219 powerMonitor;
+HardwareSerial nextionSerial(2);
+
+// ISR for Flow Sensor
+void IRAM_ATTR pulseCounterISR() {
+  flowPulseCount++;
+}
+
+// Function Declarations
+void setupHardware();
+void restoreSession();
+void saveSessionToNVS(MachineState state, unsigned long elapsed);
+void handleStateTransitions();
+void runGrindingCycle();
+void runSoakingCycle();
+void runMixingCycle();
+void runCompressionCycle();
+void runDryingCycle();
+void updateHMIDashboard();
+void sendSoundCue(int beeps, int durationMs);
+void executeEmergencyStop(String reason);
+
+void setup() {
+  Serial.begin(115200);
+  nextionSerial.begin(9600, SERIAL_8N1, NEXTION_RX_PIN, NEXTION_TX_PIN);
+  
+  setupHardware();
+  restoreSession();
+}
+
+void loop() {
+  if (currentState != STATE_IDLE && !isPaused) {
+    handleStateTransitions();
+  }
+  updateHMIDashboard();
+  delay(100);
+}
+
+void setupHardware() {
+  pinMode(GRINDER_RELAY_PIN, OUTPUT);
+  pinMode(SOLENOID_RELAY_PIN, OUTPUT);
+  pinMode(MIXER_RELAY_PIN, OUTPUT);
+  pinMode(HALOGEN_RELAY_PIN, OUTPUT);
+  pinMode(FAN_RELAY_PIN, OUTPUT);
+  pinMode(BUZZER_PIN, OUTPUT);
+  
+  // Set Relays to SAFE State (Normally-Open, Active-LOW configurations)
+  digitalWrite(GRINDER_RELAY_PIN, HIGH);
+  digitalWrite(SOLENOID_RELAY_PIN, HIGH);
+  digitalWrite(MIXER_RELAY_PIN, HIGH);
+  digitalWrite(HALOGEN_RELAY_PIN, HIGH);
+  digitalWrite(FAN_RELAY_PIN, HIGH);
+  digitalWrite(BUZZER_PIN, LOW);
+
+  pinMode(LIMIT_SWITCH_TOP, INPUT_PULLUP);
+  pinMode(LIMIT_SWITCH_BOTTOM, INPUT_PULLUP);
+  pinMode(FLOW_SENSOR_PIN, INPUT_PULLUP);
+
+  attachInterrupt(digitalPinToInterrupt(FLOW_SENSOR_PIN), pulseCounterISR, RISING);
+
+  tempSensor.begin();
+  dht.begin();
+  powerMonitor.begin();
+  
+  loadCell.begin(HX711_DOUT_PIN, HX711_SCK_PIN);
+  loadCell.set_scale(LOADCELL_CALIBRATION_FACTOR);
+  loadCell.tare(); 
+
+  sendSoundCue(1, 200); // System Ready Beep
+}
+
+void restoreSession() {
+  preferences.begin("briquette", false);
+  currentUserID = preferences.getInt("user_id", 0);
+  int savedStateVal = preferences.getInt("last_state", STATE_IDLE);
+  stateElapsedDuration = preferences.getULong("elapsed_time", 0);
+  accumulatedWaterLiters = preferences.getFloat("water_accum", 0.0);
+  
+  if (currentUserID > 0 && savedStateVal != STATE_IDLE && savedStateVal != STATE_COMPLETED) {
+    currentState = static_cast<MachineState>(savedStateVal);
+    nextionSerial.print("page page_session_resume\xFF\xFF\xFF");
+    Serial.println("System Alert: Interrupted session detected. Resuming state: " + String(currentState));
+  } else {
+    currentState = STATE_IDLE;
+    nextionSerial.print("page page_boot\xFF\xFF\xFF");
+  }
+}
+
+void saveSessionToNVS(MachineState state, unsigned long elapsed) {
+  preferences.putInt("last_state", static_cast<int>(state));
+  preferences.putULong("elapsed_time", elapsed);
+  preferences.putFloat("water_accum", accumulatedWaterLiters);
+  preferences.putInt("user_id", currentUserID);
+}
+
+void handleStateTransitions() {
+  switch (currentState) {
+    case STATE_GRINDING:
+      runGrindingCycle();
+      break;
+    case STATE_SOAKING:
+      runSoakingCycle();
+      break;
+    case STATE_MIXING:
+      runMixingCycle();
+      break;
+    case STATE_COMPRESSION:
+      runCompressionCycle();
+      break;
+    case STATE_DRYING:
+      runDryingCycle();
+      break;
+    case STATE_COMPLETED:
+      sendSoundCue(3, 500);
+      saveSessionToNVS(STATE_IDLE, 0);
+      currentState = STATE_IDLE;
+      nextionSerial.print("page page_completed\xFF\xFF\xFF");
+      break;
+    default:
+      break;
+  }
+}
+
+void runGrindingCycle() {
+  if (stateTimerStart == 0) {
+    stateTimerStart = millis() - stateElapsedDuration;
+    digitalWrite(GRINDER_RELAY_PIN, LOW); // Activate Grinder Motor
+    Serial.println("Action: Grinder Activated.");
+  }
+
+  unsigned long elapsed = millis() - stateTimerStart;
+  saveSessionToNVS(STATE_GRINDING, elapsed);
+
+  if (elapsed >= 180000) { // 3 minutes
+    digitalWrite(GRINDER_RELAY_PIN, HIGH); // Deactivate Grinder
+    sendSoundCue(2, 300);
+    stateTimerStart = 0;
+    stateElapsedDuration = 0;
+    currentState = STATE_SOAKING;
+    saveSessionToNVS(STATE_SOAKING, 0);
+    Serial.println("FSM State Transition: Grinding to Soaking.");
+  }
+}
+
+void runSoakingCycle() {
+  if (stateTimerStart == 0) {
+    stateTimerStart = millis();
+    flowPulseCount = 0;
+    digitalWrite(SOLENOID_RELAY_PIN, LOW); // Open Solenoid Valve
+    Serial.println("Action: Solenoid Valve Opened.");
+  }
+
+  accumulatedWaterLiters = (float)flowPulseCount / CALIBRATION_FACTOR_FLOW;
+  unsigned long elapsed = millis() - stateTimerStart;
+  saveSessionToNVS(STATE_SOAKING, elapsed);
+
+  if (accumulatedWaterLiters >= targetWaterLiters) {
+    digitalWrite(SOLENOID_RELAY_PIN, HIGH); // Close Solenoid Valve
+    sendSoundCue(2, 300);
+    stateTimerStart = 0;
+    stateElapsedDuration = 0;
+    currentState = STATE_MIXING;
+    saveSessionToNVS(STATE_MIXING, 0);
+    Serial.println("FSM State Transition: Soaking to Mixing.");
+  }
+}
+
+void runMixingCycle() {
+  if (stateTimerStart == 0) {
+    stateTimerStart = millis() - stateElapsedDuration;
+    digitalWrite(MIXER_RELAY_PIN, LOW); // Activate Geared Mixing Motor
+    Serial.println("Action: Mixing Motor Activated.");
+  }
+
+  unsigned long elapsed = millis() - stateTimerStart;
+  saveSessionToNVS(STATE_MIXING, elapsed);
+
+  if (elapsed >= 300000) { // 5 minutes
+    digitalWrite(MIXER_RELAY_PIN, HIGH); // Deactivate Mixer
+    sendSoundCue(2, 300);
+    stateTimerStart = 0;
+    stateElapsedDuration = 0;
+    currentState = STATE_COMPRESSION;
+    saveSessionToNVS(STATE_COMPRESSION, 0);
+    Serial.println("FSM State Transition: Mixing to Compression.");
+  }
+}
+
+void runCompressionCycle() {
+  if (digitalRead(LIMIT_SWITCH_TOP) == HIGH) {
+    executeEmergencyStop("Safety Error: Molding Lid Unlocked!");
+    return;
+  }
+
+  float rawWeightValue = loadCell.get_units(5); 
+  float activeForceNewtons = rawWeightValue * 9.80665 * 2.0; 
+
+  saveSessionToNVS(STATE_COMPRESSION, millis() - stateTimerStart);
+
+  if (activeForceNewtons < 2000.0 && digitalRead(LIMIT_SWITCH_BOTTOM) == HIGH) {
+    analogWrite(ACTUATOR_RPWM_PIN, 255);
+    analogWrite(ACTUATOR_LPWM_PIN, 0);
+  } else {
+    analogWrite(ACTUATOR_RPWM_PIN, 0);
+    analogWrite(ACTUATOR_LPWM_PIN, 0);
+    Serial.println("Target Force Achieved: 2000N. Holding Compaction for consolidation.");
+    delay(30000); // 30-second structural hold time
+
+    Serial.println("Retracting Actuator.");
+    while (digitalRead(LIMIT_SWITCH_TOP) == HIGH) {
+      analogWrite(ACTUATOR_RPWM_PIN, 0);
+      analogWrite(ACTUATOR_LPWM_PIN, 255);
+      delay(50);
+    }
+    analogWrite(ACTUATOR_LPWM_PIN, 0); // Disengage motor
+
+    sendSoundCue(2, 300);
+    currentState = STATE_DRYING;
+    saveSessionToNVS(STATE_DRYING, 0);
+    Serial.println("FSM State Transition: Compression to Drying.");
+  }
+}
+
+void runDryingCycle() {
+  if (stateTimerStart == 0) {
+    stateTimerStart = millis() - stateElapsedDuration;
+    digitalWrite(HALOGEN_RELAY_PIN, LOW); // Energize Infrared Lamps
+    digitalWrite(FAN_RELAY_PIN, LOW);     // Start Chamber Exhaust Blower
+    Serial.println("Action: Drying Chamber Energized.");
+  }
+
+  tempSensor.requestTemperatures();
+  float coreTemp = tempSensor.getTempCByIndex(0);
+  float boundaryHumidity = dht.readHumidity();
+
+  unsigned long elapsed = millis() - stateTimerStart;
+  saveSessionToNVS(STATE_DRYING, elapsed);
+
+  // Thermal Protection Loop
+  if (coreTemp >= 80.0) {
+    digitalWrite(HALOGEN_RELAY_PIN, HIGH); 
+    Serial.println("System Alert: High Chamber Temperature, temporarily turning off heat.");
+  } else if (coreTemp <= 65.0) {
+    digitalWrite(HALOGEN_RELAY_PIN, LOW); 
+  }
+
+  if (boundaryHumidity <= 15.0 && elapsed > 600000) { // Min run time of 10 min
+    digitalWrite(HALOGEN_RELAY_PIN, HIGH);
+    digitalWrite(FAN_RELAY_PIN, HIGH);
+    currentState = STATE_COMPLETED;
+    saveSessionToNVS(STATE_COMPLETED, 0);
+    Serial.println("FSM State Transition: Drying to Completed.");
+  }
+}
+
+void updateHMIDashboard() {
+  float batteryVolts = powerMonitor.getBusVoltage_V();
+  float currentAmps = powerMonitor.getCurrent_mA() / 1000.0;
+  float systemPowerW = powerMonitor.getPower_mW() / 1000.0;
+
+  tempSensor.requestTemperatures();
+  float tempC = tempSensor.getTempCByIndex(0);
+  float humRH = dht.readHumidity();
+
+  nextionSerial.print("txt_state.txt=\"" + String(currentState) + "\"\xFF\xFF\xFF");
+  nextionSerial.print("val_volt.txt=\"" + String(batteryVolts, 2) + " V\"\xFF\xFF\xFF");
+  nextionSerial.print("val_curr.txt=\"" + String(currentAmps, 3) + " A\"\xFF\xFF\xFF");
+  nextionSerial.print("val_power.txt=\"" + String(systemPowerW, 2) + " W\"\xFF\xFF\xFF");
+  nextionSerial.print("val_temp.txt=\"" + String(tempC, 1) + " C\"\xFF\xFF\xFF");
+  nextionSerial.print("val_hum.txt=\"" + String(humRH, 0) + "%\"\xFF\xFF\xFF");
+  nextionSerial.print("val_water.txt=\"" + String(accumulatedWaterLiters, 2) + " L\"\xFF\xFF\xFF");
+}
+
+void sendSoundCue(int beeps, int durationMs) {
+  for (int i = 0; i < beeps; i++) {
+    digitalWrite(BUZZER_PIN, HIGH);
+    delay(durationMs);
+    digitalWrite(BUZZER_PIN, LOW);
+    if (i < beeps - 1) delay(200);
+  }
+}
+
+void executeEmergencyStop(String reason) {
+  isPaused = true;
+  digitalWrite(GRINDER_RELAY_PIN, HIGH);
+  digitalWrite(SOLENOID_RELAY_PIN, HIGH);
+  digitalWrite(MIXER_RELAY_PIN, HIGH);
+  digitalWrite(HALOGEN_RELAY_PIN, HIGH);
+  digitalWrite(FAN_RELAY_PIN, HIGH);
+  
+  analogWrite(ACTUATOR_RPWM_PIN, 0);
+  analogWrite(ACTUATOR_LPWM_PIN, 0);
+
+  Serial.println("EMERGENCY SHUTDOWN TRIGGERED: " + reason);
+  
+  for (int i = 0; i < 10; i++) {
+    digitalWrite(BUZZER_PIN, HIGH);
+    delay(100);
+    digitalWrite(BUZZER_PIN, LOW);
+    delay(100);
+  }
+  
+  nextionSerial.print("txt_alert.txt=\"" + reason + "\"\xFF\xFF\xFF");
+  nextionSerial.print("page page_error\xFF\xFF\xFF");
+}
+```
+
+### **2. Companion Software Web Application & Local PWA Dashboard**
+
+To extend monitoring capabilities under off-grid environments without cellular connectivity or external routers, the system integrates a **Progressive Web App (PWA) Dashboard**.
+
+#### **A. Architecture & Local Connection Flow**
+1. **SSID Broadcast**: The ESP32 is configured to host a localized Wi-Fi Access Point (AP) (SSID: `Briquette-Machine-AP`, Password: `CpE_Thesis_2026`).
+2. **Asynchronous Server**: Using `ESPAsyncWebServer`, the ESP32 serves pre-compiled HTML, CSS, and JS dashboard files stored in its onboard **LittleFS flash partition** when a connected device navigates to `http://192.168.4.1`.
+3. **Bi-directional WebSockets**: Once the webpage loads, it initializes a bi-directional WebSocket interface with the ESP32. This enables low-overhead telemetry streams (sensor values transmitted as JSON packets at $10\text{ Hz}$) and instant touch command routing (remote starts, pauses, calibration, and taring overrides).
+
+#### **B. Technical Sourcing Stack**
+*   **Onboard Firmware Engine**:
+    *   *WebServer*: `ESPAsyncWebServer` (handles non-blocking asynchronous HTTP requests).
+    *   *Communication Protocol*: Asynchronous WebSockets (`ESPAsyncWebServer` native implementation).
+    *   *Flash Partition Manager*: `LittleFS` (flat filesystem partition for webpage file assets).
+    *   *JSON Parser*: `ArduinoJson` (serializes sensor data arrays).
+*   **Frontend Dashboard Framework**:
+    *   *Core Engine*: **React.js** (built using **Vite** to maintain a compiled bundle size $<200\text{ KB}$ for fast flash transfers).
+    *   *Responsive Interface*: **TailwindCSS** + **DaisyUI** (configured for a dark-mode glassmorphic interface with glass panels and micro-animations).
+    *   *Real-time Plotting*: **Recharts** (renders smooth, scrollable real-time line charts of linear actuator force in Newtons and humidity drop profiles).
+    *   *Data Export*: Custom JS modules that store batch histories in the browser's `localStorage` and compile them into download-ready **CSV files** (allowing researchers to export batch times, moisture weights, and power consumption directly to their computers for analysis).
 
 ---
 
@@ -680,17 +971,86 @@ Through these statistical models, the study determines the optimal raw material 
 
 ## **Design Project Flow**
 
-The design project flow is structured to translate the engineering specifications of the semi-automated briquetting machine into a coherent, functional cyber-physical system, composed of three integrated design domains: System Architecture, Schematic Diagram, and Prototype physical chambers.
+The design project flow is structured to translate the engineering specifications of the semi-automated briquetting machine into a coherent, functional cyber-physical system. 
 
-### **1. System Architecture**
-The system architecture governs the data, power, and logical flows across the different hardware domains, categorized into three operational layers:
-*   **Power Distribution Layer (12V High-Power & 5V/3.3V Logic Rails)**: Coordinates electrical flows from the 100W monocrystalline solar panel through the 10A MPPT charge controller to charge the 12V 30Ah LiFePO4 battery pack. Real-time consumption is monitored via the INA219. High-power actuators (grinder, mixer, linear press, halogen drying lamps) run on the raw 12V DC bus. A step-down buck converter supplies a stable, low-noise 5.0V rail to power the ESP32 and Nextion touchscreen.
-*   **Control Layer (Firmware State Machine)**: The ESP32 coordinates the operational sequence of the FSM using low-power optocoupled relays to handle active inductive motor starts, solenoid open/closes, and solid-state heat switching, maintaining absolute galvanic isolation from sensitive microcontroller components.
-*   **Data and Telemetry Feedback Layer**: Establishes continuous sensing pathways, reading volumetric flow interrupt pulses (YF-S201), strain-gauge ADC packets (HX711/Load Cell), 1-Wire temperature codes (DS18B20), and single-bus relative humidity (DHT22) to update the visual GUI dashboard on the Nextion screen over hardware serial.
+The developmental cycle progresses through five distinct, structured stages:
+1. **Mathematical System Modeling**: Sizing power requirements ($261.9\text{ Wh}$ daily budget), mechanical thrust profiles ($2000\text{ N}$ compression limits), and volumetric targets ($250\text{ cm}^3$ briquette compartments).
+2. **Schematic Mapping & Logic Solder**: Implementing isolated PCB domains for high-power relays, H-bridges, logic-level shifters, and common-ground decoupling arrays.
+3. **Physical Mechanical Assembly**: Welding the angle-bar framework and milling the grinding container, dual offset paddle mixing tub, 2:1 lever force divider plate, and reflective insulated drying chamber.
+4. **Sensor Scaling & Telemetry Calibration**: Programming gravimetric pulse integrations ($450\text{ pulses/L}$), 5-point scale factors ($22,480.0\text{ LSB/kg}$), and 3rd-order temperature-humidity polynomial equations.
+5. **Empirical System Evaluation**: Executing comparative trial groups ($N=120$ specimens) and HCI human validation studies ($n=30$ respondents) using weighted means, Welch's t-tests, and One-way ANOVA tables to establish the system's operational efficiency.
 
 ---
 
-### **2. Schematic Diagram**
+## **System Architecture**
+
+The system architecture governs the data, power, and logical flows across the different hardware domains, categorized into three operational layers:
+*   **Power Distribution Layer (12V High-Power & 5V/3.3V Logic Rails)**: Coordinates electrical flows from the 100W monocrystalline solar panel through the 10A MPPT charge controller to charge the 12V 30Ah LiFePO4 battery pack. Real-time consumption is monitored via the INA219. High-power actuators (grinder, mixer, linear press, halogen drying lamps) run on the raw 12V DC bus. A step-down buck converter supplies a stable, low-noise 5.0V rail to power the ESP32 and Nextion touchscreen.
+*   **Control Layer (Firmware State Machine)**: The ESP32 coordinates the operational sequence of the FSM using low-power optocoupled relays to handle active inductive motor starts, solenoid open/closes, and solid-state heat switching, maintaining absolute galvanic isolation from sensitive microcontroller components.
+*   **Data and Telemetry Feedback Layer**: Establishes continuous sensing pathways, reading volumetric flow interrupt pulses (YF-S201), strain-gauge ADC packets (HX711/Load Cell), 1-Wire temperature codes (DS18B20), and single-bus relative humidity (DHT22) to update the visual GUI dashboard on the Nextion screen and the companion web app dashboard over Wi-Fi WebSockets.
+
+```mermaid
+graph TD
+    %% Power Sources & Regulation
+    PV[100W Monocrystalline Solar Panel] -->|18V, 5.5A Max| MPPT[10A MPPT Charge Controller]
+    MPPT -->|12.8V Charging Bus| Battery[12V 30Ah LiFePO4 Battery]
+    Battery -->|12V High-Power Bus| INA[INA219 Power Monitor]
+    
+    INA -->|12V High-Current Bus| RelayBox[Optocoupled Relay Board]
+    INA -->|12V High-Current Bus| IBT2[IBT-2 Motor Driver]
+    INA -->|12V Low-Current| StepDown[5V Buck Converter]
+    StepDown -->|Regulated 5V Rail| ESP32[ESP32 Microcontroller]
+    StepDown -->|Regulated 5V Rail| Nextion[Nextion 4.3 HMI Touchscreen]
+    StepDown -->|Regulated 5V Rail| HX711[HX711 24-Bit ADC]
+    StepDown -->|Regulated 5V Rail| Buzzer[Active Buzzer Driver]
+
+    ESP32 -->|Regulated 3.3V Sensor Bus| DS18B20[DS18B20 Temp Sensor]
+    ESP32 -->|Regulated 3.3V Sensor Bus| DHT22[DHT22 Humidity Sensor]
+
+    %% Control Signals (ESP32 to Actuators)
+    ESP32 -->|GPIO 25, 26 PWM Speed & Dir| IBT2
+    ESP32 -->|GPIO 27 Active-LOW| RelayBox
+    ESP32 -->|GPIO 14 Active-LOW| RelayBox
+    ESP32 -->|GPIO 12 Active-LOW| RelayBox
+    ESP32 -->|GPIO 13 Active-LOW| RelayBox
+    ESP32 -->|GPIO 15 Active-LOW| RelayBox
+    ESP32 -->|GPIO 2 Active-HIGH| Buzzer
+
+    %% Actuation Outputs
+    IBT2 -->|12V Reversible 4A| Actuator[12V DC Linear Actuator]
+    RelayBox -->|Ch 1: 12V 5A| Grinder[775 Grinder Motor]
+    RelayBox -->|Ch 2: 12V 0.8A| Solenoid[Water Solenoid Valve]
+    RelayBox -->|Ch 3: 12V 3A| Mixer[Geared Wiper Mixer Motor]
+    RelayBox -->|Ch 4: 12V 4.16A| Halogen[50W Halogen Lamps]
+    RelayBox -->|Ch 5: 12V 0.2A| Exhaust[Chamber Exhaust Fan]
+
+    %% Data Feedback Loops (Sensors to ESP32)
+    Nextion <-->|GPIO 16, 17 UART 9600 bps| ESP32
+    ESP32 <-->|WiFi 192.168.4.1 WebSockets| Companion[Companion PWA App Dashboard]
+    INA <-->|GPIO 21, 22 I2C Bus| ESP32
+    HX711 -->|GPIO 4, 5 Serial Clock & Data| ESP32
+    LoadCell[S-Type 100kg Load Cell] -->|Analog Micro-Volts Wheatstone| HX711
+    Flow[YF-S201 Flow Sensor] -->|GPIO 18 Hardware Interrupt pulses| ESP32
+    DS18B20 -->|GPIO 19 1-Wire Digital Bus| ESP32
+    DHT22 -->|GPIO 23 Single-Bus Digital| ESP32
+    
+    %% Mechanical Feedback
+    LidSwitch[Lid Safety Limit Switch] -->|GPIO 32 Active-LOW Safety Interrupt| ESP32
+    BaseSwitch[Base Safety Limit Switch] -->|GPIO 33 Active-LOW Safety Interrupt| ESP32
+
+    classDef power fill:#f96,stroke:#333,stroke-width:2px;
+    classDef control fill:#9cf,stroke:#333,stroke-width:1px;
+    classDef data fill:#9f9,stroke:#333,stroke-width:1px;
+    
+    class PV,MPPT,Battery,INA,StepDown power;
+    class IBT2,RelayBox,Grinder,Solenoid,Mixer,Halogen,Exhaust,Actuator,Buzzer control;
+    class ESP32,Nextion,HX711,DS18B20,DHT22,LoadCell,Flow,LidSwitch,BaseSwitch data;
+```
+
+---
+
+## **Schematic Diagram**
+
 The system's electrical circuit schematic isolates high-frequency electrical noise generated by high-current motors and actuators from the sensitive analog sensor network. 
 
 To prevent power startup transients from resetting the ESP32 or corrupting the I2C telemetry, the system incorporates the following logical isolation boundaries:
@@ -733,7 +1093,8 @@ To prevent power startup transients from resetting the ESP32 or corrupting the I
 
 ---
 
-### **3. Prototype Design**
+## **Prototype Design**
+
 The mechanical framework of the semi-automated machine is constructed from structural $2020$ T-slot aluminum extrusions, which provide a high strength-to-weight ratio, and food-grade 304 stainless steel sheets for the material chambers. The physical prototype occupies a space-efficient footprint of $120.0 \text{ cm} \times 100.0 \text{ cm}$.
 
 ```text
@@ -769,8 +1130,49 @@ The mechanical framework of the semi-automated machine is constructed from struc
 The prototype incorporates four functional, sequential chambers:
 
 *   **Grinding Chamber**: Featuring a cylindrical steel container fitted with dual rotary steel cutting blades. The high-speed rotation driven by the 12V 775 DC motor (10,000 RPM) crushes dry residual charcoal fines into a fine dust ($d < 2.0\text{ mm}$), creating an optimal carbonaceous base.
+
+```text
+                [FEED HOPPER]
+               \             /
+                \           /
+           +-----v---------v-----+
+           |                     |
+           |   CHAMBER CASING    |
+           | (304 Stainless Lined)
+           |                     |
+     ======|====[Steel Blade]====|======
+           |          ^          |
+           |          | (D-Shaft)|
+           +----------+----------+
+                       |
+               [775 GRINDER MOTOR]
+               (12V DC, 10k RPM)
+```
+
 *   **Soaking and Mixing Chamber**: A high-capacity blending vessel housing dual-layer paddles offset by 90 degrees. It is fed with a precise volume of water via a closed-loop solenoid control and driven by the high-torque geared mixing motor to blend hydrated paper fibers and charcoal powder.
-*   **Molding Press Chamber**: Equipped with a heavy-duty rectangular steel sleeve. Compression is executed by the 12V high-force linear actuator pushing the press platen down into the mold cavity. 
+
+```text
+           [WATER SOLENOID INLET]
+                      |
+                      v
+            +---------+---------+
+            |                   | <------- [MIXING SHAFT]
+            |   _ _ _ _ _ _ _   |  
+            |  |             |  | <------- [PADDLE LAYER 1]
+            |  |             |  |
+            |  |_ _ _ _ _ _ _|  |
+            |         |         |
+            |   _ _ _ _ _ _ _   | <------- [PADDLE LAYER 2] (Offset 90 deg)
+            |  |             |  |
+            |  |_ _ _ _ _ _ _|  |
+            |         |         |
+            +---------+---------+
+                      |
+             [PLANETARY MIXER MOTOR]
+                (12V DC, 60 RPM)
+```
+
+*   **Molding Press Chamber**: Equipped with a heavy-duty rectangular steel sleeve. Compaction is executed by the 12V high-force linear actuator pushing the press platen down into the mold cavity. 
     To protect the 100kg S-type load cell located at the base from high impact stress, a class-1 force multiplier lever is integrated. The pivot arm acts as a **2:1 force divider**, routing exactly half of the compaction force ($1000\text{ N}$ or $\approx 102\text{ kg}$) to the strain-gauge sensor, allowing safe, highly precise monitoring up to the targeted $2000\text{ N}$ limit.
 
 ```text
