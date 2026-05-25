@@ -65,18 +65,18 @@ flowchart TD
     
     P1_CheckSync{Soaking and Grinding<br/>Complete?}:::decisionStyle
     P1_Pulse --> P1_CheckSync
-    P1_CheckSync -->|Yes| Conn_B_Out([B]):::connectorStyle
+    P1_CheckSync -->|Yes| Conn_A_Out([A]):::connectorStyle
 
     %% PAGE 2: DRAINING & COMBINING
-    Conn_B_In([B]):::connectorStyle
+    Conn_A_In([A]):::connectorStyle
     P2_GateCombine{Did Operator Click<br/>'Confirm Combine'<br/>on Touch Screen?}:::decisionStyle
     P2_Transfer["Execute: STATE_TRANSFER1"]:::processStyle
     P2_CheckDrain{Finished Drain?}:::decisionStyle
     P2_OpenDrain[\Open Drain Valve on Phase 2 Level/]:::ioStyle
     P2_GateCombine2{Combine?}:::decisionStyle
     
-    Conn_B_In --> P2_GateCombine
-    P2_GateCombine -->|No| Conn_A_Out([A]):::connectorStyle
+    Conn_A_In --> P2_GateCombine
+    P2_GateCombine -->|No| Conn_E_Out([E]):::connectorStyle
     P2_GateCombine -->|Yes| P2_Transfer
     P2_Transfer --> P2_CheckDrain
     P2_CheckDrain -->|No| P2_OpenDrain --> P2_CheckDrain
@@ -99,18 +99,18 @@ flowchart TD
     
     P2_CheckMix -->|Yes| P2_StopPlanetary
     P2_StopPlanetary --> P2_Dump
-    P2_Dump --> Conn_C_Out([C]):::connectorStyle
+    P2_Dump --> Conn_B_Out([B]):::connectorStyle
 
     %% OFF-PAGE LOOP BACK
-    Conn_A_In([A]):::connectorStyle
-    Conn_A_In --> P1_PromptPaper
+    Conn_E_In([E]):::connectorStyle
+    Conn_E_In --> P1_PromptPaper
 
     %% PAGE 1 (CONT): COMPRESSION, SAFETY, & DRYING
-    Conn_C_In([C]):::connectorStyle
+    Conn_B_In([B]):::connectorStyle
     P1_GateCompress{Turn On Compressing Stage?}:::decisionStyle
     
-    Conn_C_In --> P1_GateCompress
-    P1_GateCompress -->|No| Conn_B_Out2([B]):::connectorStyle
+    Conn_B_In --> P1_GateCompress
+    P1_GateCompress -->|No| Conn_A_Out2([A]):::connectorStyle
     
     P1_Even["Execute: STATE_EVEN"]:::processStyle
     P1_RunERM[\Turn On ERM for Even Distribution/]:::ioStyle
@@ -141,14 +141,14 @@ flowchart TD
     P1_CheckSafety -->|No| P1_ReadLoad
     P1_ReadLoad --> P1_CheckLoad
     P1_CheckLoad -->|No| P1_ReadLoad
-    P1_CheckLoad -->|Yes| Conn_D_Out([D]):::connectorStyle
+    P1_CheckLoad -->|Yes| Conn_C_Out([C]):::connectorStyle
 
     %% PAGE 1 (CONT): CUTTING, EJECTION, DRYING
-    Conn_D_In([D]):::connectorStyle
+    Conn_C_In([C]):::connectorStyle
     P1_CheckCut{Did Compressive Strength reach 95%<br/>AND is the Mother Briquette successfully cut?}:::decisionStyle
     
-    Conn_D_In --> P1_CheckCut
-    P1_CheckCut -->|No| Conn_E_Out([E]):::connectorStyle
+    Conn_C_In --> P1_CheckCut
+    P1_CheckCut -->|No| Conn_D_Out([D]):::connectorStyle
     
     P1_Drying["Execute: STATE_DRYING"]:::processStyle
     P1_ManualMech["Manual Step:<br/>Open safety latch and slide backplate upward"]:::processStyle
@@ -168,8 +168,8 @@ flowchart TD
     P1_CheckRack -->|No| P1_End2([END]):::startEndStyle
 
     %% Connector Loops
-    Conn_E_In([E]):::connectorStyle
-    Conn_E_In --> P1_Comp
+    Conn_D_In([D]):::connectorStyle
+    Conn_D_In --> P1_Comp
 ```
 
 ### 2. The Optimized Engineering Flowchart (To-Be Design)
@@ -233,7 +233,7 @@ flowchart TD
 
     %% DRAINING & COMBINING (Resolved loops & timeouts)
     Drain_Run["Open 12V Drainage Valve Relay"]:::processStyle
-    Drain_Check{Capacitive Sensor (XK-Y25)<br/>Registers Liquid Clear<br/>OR 45s Timeout?}:::decisionStyle
+    Drain_Check{"Capacitive Sensor (XK-Y25)<br/>Registers Liquid Clear<br/>OR 45s Timeout?"}:::decisionStyle
     Drain_Close["Close 12V Drainage Valve Relay"]:::processStyle
     Combine_Gate{Confirm Combine<br/>on touch screen?}:::decisionStyle
     Combine_Run["Execute STATE_COMBINING<br/>• Servo Opens Dry Charcoal Valve<br/>• Turn on Planetary Mixer Motor<br/>• Pulse ERM to Settle Dust"]:::processStyle
@@ -274,7 +274,7 @@ flowchart TD
     Safety_Halt --> Fault_UI
     Fault_UI --> End_Node
     
-    Comp_Force{Is Compressive Load<br/>Target Met (2000N)<br/>OR 45s Overload Timeout?}:::decisionStyle
+    Comp_Force{"Is Compressive Load<br/>Target Met (2000N)<br/>OR 45s Overload Timeout?"}:::decisionStyle
     Comp_Hold["Maintain Displacement Position<br/>for 30s Cellulose Consolidation"]:::processStyle
     Comp_Retract["Retract Actuator Arm Upward<br/>Until Top Limit Switch Trips"]:::processStyle
     
@@ -311,7 +311,7 @@ flowchart TD
 
 ## Part 2: Process Translation (Step-by-Step Narrative)
 
-The execution flow of the system is distributed across Page 1 and Page 2 of your design files, coordinated through off-page connectors to maintain synchronization:
+The execution flow of the system is distributed across Page 1 and Page 2 of your design files, coordinated through off-page connectors to maintain serialization:
 
 ### Phase 1: Boot-Up & Hardware Initialization (Page 1)
 
@@ -338,7 +338,7 @@ To optimize cycle efficiency, the machine runs two parallel pre-processing chann
 * **Grinding Hopper Prompt**: Simultaneously, the HMI prompts the operator to feed raw residual charcoal fines into the grinding hopper.
 * **Grinding Decision Gate**: The system queries whether the operator has triggered the grinding stage (`START: STATE_GRINDING?`).
   * **No**: The system idles.
-  * **Yes**: The system transitions to `STATE_GRINDING`. The 12V 775 high-speed DC motor relay is closed to begin pulverizing raw charcoal fragments into fine powder.
+  * **Yes**: The system transitions to `STATE_GRINDING`. The 12V 775 high-speed DC motor relay is closed to begin optical pulverization.
 * **Power Telemetry Monitoring**: An asynchronous I2C bus current sensor (INA219) tracks motor current draws and voltage drops to monitor real-time cutting torque and lockups.
 * **Grinding Timer Check**: The system checks: *"Has Predefined 3-Minute Grinding Timer Ended?"*
   * **No**: The system continues executing `STATE_GRINDING`.
@@ -393,34 +393,34 @@ While this flowchart introduces excellent mechanical improvements, it contains s
 ### 1. The "Mother Briquette Cutting" Contradiction (Major Physical Conflict)
 * **The Flowchart Step**: Page 1 (Bottom Right) introduces: *"is the Mother Briquette successfully cut?"* and refers to a *"lateral actuator"* pushing the *"cut briquettes"*.
 * **The Critique**: Your thesis scope (Chapter 1) explicitly limits the product to a single, static mold size: *"The shape, length, and weight of the charcoal-paper briquettes will be limited into a single option only (10x5x5 cm rectangular chunk fuel)."*
-* **The Issue**: Introducing a "Mother Briquette" cutting phase implies you are extruding a large log and slicing it. This requires additional motorized hardware (e.g., a motorized wire cutter, cutting blades, or high-torque cutting actuators) that isn't mentioned elsewhere in your design.
-* **The Fix**: If you are using a single-cavity mold pressed by a single linear actuator, remove all references to cutting. The linear actuator should simply press the $10\times5\times5\text{ cm}$ block, and an ejector pin or sliding plate should push out the single completed briquette.
+* **The Issue**: Introducing a "Mother Briquette" cutting phase implies you are extruding a large log and slicing it. This requires additional motorized hardware (e.g., a motorized wire cutter, cutting blades, or high-torque cutting actuators) that isn't accounted for anywhere else in your engineering design.
+* **The Fix**: If you are using a single-cavity mold pressed by a single linear actuator, remove all references to cutting. The linear actuator should simply press the static $10\times5\times5\text{ cm}$ block, and an ejector pin or sliding plate should push out the single completed briquette.
 
 ### 2. The Draining Phase Infinite Loop Hazard (Logic Bug)
 * **The Flowchart Step**: Page 2 (Top), decision block *"Finished Drain?"* $\rightarrow$ No branch goes to *"Open Drain Valve on Phase 2 Level"* $\rightarrow$ loops back to *"Finished Drain?"*.
-* **The Critique**: If draining is not finished, the drain valve should already be wide open. Re-triggering the command to open an already open valve is redundant. Furthermore, if the sensor never registers "Finished" (e.g., due to thick paper pulp blocking the capacitive sensor line), the code will hang inside this tight loop forever.
+* **The Critique**: If draining is not finished, the drain valve should already be wide open. Re-triggering the command to open an already open valve is redundant. Furthermore, if the sensor never registers "Finished" (e.g., due to thick paper pulp blocking the capacitive sensor line or software logic glitches), the code will hang inside this tight loop forever, stalling the entire processor thread.
 * **The Fix**: Redraw the loop. The action inside the No branch should be a passive non-blocking wait/delay (e.g., Wait 100ms), allowing the physical fluid level to drop. Once the sensor registers that the water has cleared (Yes), the system should then trigger a process to close the drain valve before combining.
 
 ### 3. Safety Risks of Manual vs. Automated Ejection
 * **The Flowchart Step**: Page 1 (Bottom Right) shows: *"Open safety latch and slide backplate upward"* $\rightarrow$ *"Lateral actuator pushes the cut briquettes..."*.
-* **The Critique**: Since your system is semi-automated, manual tasks performed by the operator (sliding a backplate, opening latches) must be gated by safety check loops in the firmware. If the lateral actuator fires automatically the moment the backplate is slid up without waiting for the operator's hands to clear, it poses a severe physical injury risk.
+* **The Critique**: Since your system is semi-automated, manual tasks performed by the operator (sliding a backplate, opening latches) must be gated by safety check loops in the firmware. If the lateral actuator fires automatically the moment the backplate is slid up without waiting for the operator's hands to clear the compaction path, it poses a severe physical injury risk.
 * **The Fix**: Insert an explicit HMI screen gate right before the lateral actuator fires: *"Did User Confirm Ejection on Screen?"*. The lateral actuator should only extend once the user has pressed a physical confirmation button after closing and securing the safety guards.
 
 ### 4. Sequential Representation of Parallel Tasks
-* **The Flowchart Step**: Page 1 displays Soaking and Mixing before Grinding.
-* **The Critique**: Because Soaking and Grinding are shown sequentially on a single-core flowchart layout, it implies the machine forces the user to wait for paper soaking and mixing to finish before they can even turn on the charcoal grinder.
+* **The Flowchart Step**: Page 1 displays Soaking and Mixing before Grinding sequentially.
+* **The Critique**: Because Soaking and Grinding are shown sequentially on a single-core flowchart layout, it implies the machine forces the user to wait for paper soaking and mixing to completely finish before they can even turn on the charcoal grinder.
 * **The Fix**: If these pre-processing stages can be run concurrently (e.g., using FreeRTOS dual-core tasks), draw them as two parallel vertical branches side-by-side that converge into a single horizontal block: *"Are Soaking and Grinding Both Complete?"*.
 
 ### 5. Infinite Loops on Cutting/Compacted Strength Check
 * **The Flowchart Step**: *"Did Compressive Strength reach 95% AND is the Mother Briquette successfully cut?"* $\rightarrow$ No goes to E, which loops back to the beginning of the compression stage.
-* **The Critique**: If the mechanical density limit of your biomass mix only allows it to reach 90% of your maximum compressive threshold, or if a mechanical jam prevents a clean cut, your ESP32 code will remain trapped in this compression loop. This will cause the linear actuator to stall, overheat, and drain your battery pack.
+* **The Critique**: If the mechanical density limit of your biomass mix only allows it to reach 90% of your maximum compressive threshold, or if a mechanical jam prevents a clean cut, your ESP32 code will remain trapped in this compression loop. This will cause the linear actuator to stall, overheat, and drain your solar battery pack capacity rapidly.
 * **The Fix**: Implement a safety timeout or max retry count (e.g., Has compression run for more than 45 seconds?). If the target threshold isn't met within the time limit, break the loop, retract the linear actuator, and trigger a "Stall/Density Error" screen on the HMI.
 
 ---
 
 ## Part 4: Recommended Structural Revisions for Draw.io
 
-To make this flowchart academically bulletproof for your defense panel, apply these revisions to your Draw.io files:
+To make this flowchart academically bulletproof for your defense panel, apply these revisions to your Draw.io configurations:
 
 ### Old Flow:
 ```mermaid
@@ -448,4 +448,4 @@ graph TD
 
 ---
 
-By ensuring that every actuator movement (especially high-force or lateral pushing actions) is preceded by a safety-switch verification or a manual touch-screen confirmation, you prove to your panel that your cyber-physical system is engineered with robust, industrial-grade industrial safety practices.
+By ensuring that every actuator movement (especially high-force or lateral pushing actions) is preceded by a safety-switch verification or a manual touch-screen confirmation, you prove to your panel that your cyber-physical system is engineered with robust, industrial-grade safety practices.
